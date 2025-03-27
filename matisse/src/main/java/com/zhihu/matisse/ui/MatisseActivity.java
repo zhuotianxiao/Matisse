@@ -394,6 +394,15 @@ public class MatisseActivity extends AppCompatActivity implements
             mContainer.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
             Fragment fragment = MediaSelectionFragment.newInstance(album);
+
+            // 修复matisse源码存在的，切换其他相册空白问题
+            Fragment oldFragment = getSupportFragmentManager().findFragmentByTag(MediaSelectionFragment.class.getSimpleName());
+            if (oldFragment instanceof MediaSelectionFragment) {
+                MediaSelectionFragment newFragment = (MediaSelectionFragment) oldFragment;
+                newFragment.destroyManagerLoader();
+            }
+
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment, MediaSelectionFragment.class.getSimpleName())
